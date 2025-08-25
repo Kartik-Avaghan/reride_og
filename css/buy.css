@@ -135,3 +135,21 @@ body {
     width: 100%;
   }
 }
+
+
+.book-btn {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid rgb(216,202,216);
+  border-radius: 8px;
+  background-color: #fff;
+  color: rgb(216,112,214);  /* same as your DriveX theme */
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.book-btn:hover {
+  background-color: rgb(216,202,216);
+  color: #fff;  /* white text when filled */
+}
