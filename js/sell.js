@@ -455,12 +455,15 @@ function loadContactDetails() {
 // Call this function after DOM loads
 loadContactDetails();
 
-// Submit form function
-function submitForm() {
-  // Log form data (in real app, send to server)
-  //   console.log("Form Data:", formData);
 
-  // Validate required fields again
+
+
+
+
+
+// submit form
+function submitForm() {
+  // Validate required fields
   if (!formData.fullName || !formData.mobileNumber || !formData.emailAddress) {
     alert("Please fill in all required fields");
     return;
@@ -468,41 +471,48 @@ function submitForm() {
 
   let formPayload = new FormData();
 
-  formPayload.append(
-    "data",
+  // --- Vehicle JSON ---
+  const vehicleData = {
+    vehicleBrand: formData.brand,
+    vehicleModel: formData.model,
+    vehicleModelYear: formData.year,
+    vehicleColour: formData.color,
+    vehiclePurchasedDate: formData.purchaseDate,
+    vehiclePurchasedAmount: formData.purchaseAmount,
+    vehicleOwnerType: formData.owner,
+    vehicleRegisterNumber: formData.registrationNumber,
+    vehicleInspectionBranch: formData.inspectionLocation,
+    vehicleInspectionDate: formData.inspectionDate,
+  };
 
-    new Blob(
-      [
-        JSON.stringify({
-          vehicleBrand: formData.brand,
-          vehicleModel: formData.model,
-          vehicleModelYear: formData.year,
-          vehicleColour: formData.color,
-          vehiclePurchasedDate: formData.purchaseDate,
-          vehiclePurchasedAmount: formData.purchaseAmount,
-          vehicleOwnerType: formData.owner,
-          vehicleRegisterNumber: formData.registrationNumber,
-          vehicleInspectionBranch: formData.inspectionLocation,
-          vehicleInspectionDate: formData.inspectionDate,
-          userName: formData.fullName,
-          userPhoneNo: formData.mobileNumber,
-          userEmail: formData.emailAddress,
-        }),
-      ],
-      { type: "application/json" }
-    )
+  // --- User JSON ---
+  const userData = {
+    userName: formData.fullName,
+    userPhoneNo: formData.mobileNumber,
+    userEmail: formData.emailAddress,
+    userRole: formData.role || "CUSTOMER", // optional
+  };
+
+  // Append vehicle and user as separate blobs
+  formPayload.append(
+    "vehicle",
+    new Blob([JSON.stringify(vehicleData)], { type: "application/json" })
   );
 
+  formPayload.append(
+    "user",
+    new Blob([JSON.stringify(userData)], { type: "application/json" })
+  );
+
+  // Append files
   for (let file of formData.vehicleImages || []) {
     formPayload.append("documents", file);
   }
 
+  // Optional: log content for debugging
   for (let [key, value] of formPayload.entries()) {
     if (value instanceof Blob && value.type === "application/json") {
-      // Read the JSON blob content
-      value.text().then((text) => {
-        console.log(`${key}:`, JSON.parse(text));
-      });
+      value.text().then((text) => console.log(`${key}:`, JSON.parse(text)));
     } else if (value instanceof File) {
       console.log(`${key}: File -> ${value.name}, size: ${value.size} bytes`);
     } else {
@@ -510,6 +520,7 @@ function submitForm() {
     }
   }
 
+  // Send request
   fetch("http://localhost:8080/api/vehicle/addVehicle", {
     method: "POST",
     body: formPayload,
@@ -523,6 +534,77 @@ function submitForm() {
     })
     .catch((error) => console.log(error));
 }
+
+
+
+// Submit form function
+// function submitForm() {
+//   // Log form data (in real app, send to server)
+//   //   console.log("Form Data:", formData);
+
+//   // Validate required fields again
+//   if (!formData.fullName || !formData.mobileNumber || !formData.emailAddress) {
+//     alert("Please fill in all required fields");
+//     return;
+//   }
+
+//   let formPayload = new FormData();
+
+//   formPayload.append(
+//     "data",
+
+//     new Blob(
+//       [
+//         JSON.stringify({
+//           vehicleBrand: formData.brand,
+//           vehicleModel: formData.model,
+//           vehicleModelYear: formData.year,
+//           vehicleColour: formData.color,
+//           vehiclePurchasedDate: formData.purchaseDate,
+//           vehiclePurchasedAmount: formData.purchaseAmount,
+//           vehicleOwnerType: formData.owner,
+//           vehicleRegisterNumber: formData.registrationNumber,
+//           vehicleInspectionBranch: formData.inspectionLocation,
+//           vehicleInspectionDate: formData.inspectionDate,
+//           userName: formData.fullName,
+//           userPhoneNo: formData.mobileNumber,
+//           userEmail: formData.emailAddress,
+//         }),
+//       ],
+//       { type: "application/json" }
+//     )
+//   );
+
+//   for (let file of formData.vehicleImages || []) {
+//     formPayload.append("documents", file);
+//   }
+
+//   for (let [key, value] of formPayload.entries()) {
+//     if (value instanceof Blob && value.type === "application/json") {
+//       // Read the JSON blob content
+//       value.text().then((text) => {
+//         console.log(`${key}:`, JSON.parse(text));
+//       });
+//     } else if (value instanceof File) {
+//       console.log(`${key}: File -> ${value.name}, size: ${value.size} bytes`);
+//     } else {
+//       console.log(`${key}:`, value);
+//     }
+//   }
+
+//   fetch("http://localhost:8080/api/vehicle/addVehicle", {
+//     method: "POST",
+//     body: formPayload,
+//   })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       console.log(data);
+//       alert(
+//         "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon."
+//       );
+//     })
+//     .catch((error) => console.log(error));
+// }
 
 // Initialize the form
 document.addEventListener("DOMContentLoaded", function () {
