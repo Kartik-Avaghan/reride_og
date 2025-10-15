@@ -510,7 +510,7 @@ function submitForm() {
     }
   }
 
-  fetch("http://localhost:8080/vehicle/request", {
+  fetch("http://localhost:8080/api/vehicle/addvehicle/", {
     method: "POST",
     body: formPayload,
   })
