@@ -335,6 +335,7 @@ function loadRegistrationUpload() {
           imagePreviewDiv.appendChild(img);
         };
         reader.readAsDataURL(file);
+
       });
     }
   }
@@ -469,6 +470,7 @@ function submitForm() {
 
   formPayload.append(
     "data",
+
     new Blob(
       [
         JSON.stringify({
@@ -482,7 +484,6 @@ function submitForm() {
           vehicleRegisterNumber: formData.registrationNumber,
           vehicleInspectionBranch: formData.inspectionLocation,
           vehicleInspectionDate: formData.inspectionDate,
-
           userName: formData.fullName,
           userPhoneNo: formData.mobileNumber,
           userEmail: formData.emailAddress,
@@ -492,7 +493,7 @@ function submitForm() {
     )
   );
 
-  for (let file of formData.documents || []) {
+  for (let file of formData.vehicleImages || []) {
     formPayload.append("documents", file);
   }
 
