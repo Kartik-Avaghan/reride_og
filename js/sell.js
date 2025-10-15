@@ -373,6 +373,13 @@ function loadInspectionDetails() {
   const inspectionLocationInput = document.getElementById("inspectionLocation");
   const inspectionButton = document.getElementById("inspection-btn");
 
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Format to YYYY-MM-DD
+  const minDate = tomorrow.toISOString().split("T")[0];
+  inspectionDateInput.setAttribute("min", minDate);
+
   if (!inspectionDateInput || !inspectionLocationInput || !inspectionButton)
     return;
 
@@ -442,7 +449,6 @@ function loadContactDetails() {
     formData.emailAddress = e.target.value;
     checkContactFields();
   });
-
 }
 
 // Call this function after DOM loads
@@ -454,11 +460,7 @@ function submitForm() {
   //   console.log("Form Data:", formData);
 
   // Validate required fields again
-  if (
-    !formData.fullName ||
-    !formData.mobileNumber ||
-    !formData.emailAddress 
-  ) {
+  if (!formData.fullName || !formData.mobileNumber || !formData.emailAddress) {
     alert("Please fill in all required fields");
     return;
   }
@@ -482,9 +484,8 @@ function submitForm() {
           vehicleInspectionDate: formData.inspectionDate,
 
           userName: formData.fullName,
-          userPhoneNo : formData.mobileNumber,
-          userEmail : formData.emailAddress,
-         
+          userPhoneNo: formData.mobileNumber,
+          userEmail: formData.emailAddress,
         }),
       ],
       { type: "application/json" }
@@ -495,20 +496,18 @@ function submitForm() {
     formPayload.append("documents", file);
   }
 
-
   for (let [key, value] of formPayload.entries()) {
-  if (value instanceof Blob && value.type === "application/json") {
-    // Read the JSON blob content
-    value.text().then((text) => {
-      console.log(`${key}:`, JSON.parse(text));
-    });
-  } else if (value instanceof File) {
-    console.log(`${key}: File -> ${value.name}, size: ${value.size} bytes`);
-  } else {
-    console.log(`${key}:`, value);
+    if (value instanceof Blob && value.type === "application/json") {
+      // Read the JSON blob content
+      value.text().then((text) => {
+        console.log(`${key}:`, JSON.parse(text));
+      });
+    } else if (value instanceof File) {
+      console.log(`${key}: File -> ${value.name}, size: ${value.size} bytes`);
+    } else {
+      console.log(`${key}:`, value);
+    }
   }
-}
-
 
   fetch("http://localhost:8080/vehicle/request", {
     method: "POST",
