@@ -6,6 +6,10 @@ const vehicleData = {
   TVS: [
     "Apache RTR 160",
     "Apache RTR 200",
+    "Apache RTX 300",
+    "Ronin",
+    "Apache RR 310",
+    "Apache RTR 310",
     "Jupiter",
     "Ntorq 125",
     "Star City Plus",
@@ -23,6 +27,7 @@ const vehicleData = {
     "Pulsar 200",
     "Pulsar 220F",
     "Pulsar NS200",
+    "Pulsar NS400Z",  
   ],
   Hero: [
     "Glamour",
@@ -33,6 +38,7 @@ const vehicleData = {
     "Super Splendor",
   ],
   Honda: [
+    "Activa 4G",
     "Activa 6G",
     "CB Shine",
     "CB Unicorn",
@@ -41,11 +47,18 @@ const vehicleData = {
     "Hornet 2.0",
     "SP 125",
     "X-Blade",
+    "CB350",
+    "CB650R",
+    "XL750 Transalp",
+    "Xtreme 125R",
   ],
   Yamaha: [
     "FZ-S",
     "FZ Version 3.0",
+    "FZ-S Hybrid",
+    "FZ-X",
     "MT-15",
+    "R15 V3",
     "R15 V4",
     "Ray ZR",
     "Saluto RX",
@@ -58,6 +71,11 @@ const vehicleData = {
     "Interceptor 650",
     "Meteor 350",
     "Thunderbird 350",
+    "Hunter 350",
+    "Classic 650",
+    "Scram 440",
+    "Bear 650",
+    "Guerrilla 450",
   ],
   Suzuki: [
     "Access 125",
@@ -73,9 +91,11 @@ const vehicleData = {
     "200 Duke",
     "250 Duke",
     "390 Duke",
+    "160 Duke",  
     "RC 125",
     "RC 200",
     "RC 390",
+    "RC 160",   
   ],
   Kawasaki: [
     "Ninja 300",
@@ -84,10 +104,27 @@ const vehicleData = {
     "Z650",
     "Z900",
     "Versys 650",
+    "Versys-X 300",  
   ],
   OLA: ["S1", "S1 Pro", "S1 Air"],
   Vespa: ["Elegante 150", "SXL 150", "VXL 150", "ZX 125"],
+  Indian: [
+    "Scout",
+    "Challenger",
+    "Chief",
+    "Chieftain",
+    "Pursuit",
+    "Roadmaster",
+    "Roadmaster Elite",
+    "Chief PowerPlus",
+    "Chieftain PowerPlus",
+  ],
+  Ultraviolette: [
+    "X47",
+    "X47 Crossover",
+  ],
 };
+
 
 // Main function to select option and move to next step
 function selectOption(type, value, stepNumber) {
@@ -304,25 +341,15 @@ function loadRegistrationUpload() {
     formData.vehicleImages = [];
   }
 
-  function checkRegistrationDetails() {
-    const regNumber = registrationNumberInput.value.trim();
-    const regImages = registrationImageInput.files;
-
-    if (regNumber !== "" && regImages.length > 0) {
-      registrationButton.style.display = "block";
-    } else {
-      registrationButton.style.display = "none";
-    }
-
-    if (regImages.length > 0) {
-      // Show file count
+    function renderImagePreview() {
+    imagePreviewDiv.innerHTML = "";
+    if (formData.vehicleImages.length > 0) {
       const countText = document.createElement("p");
-      countText.textContent = `${regImages.length} image(s) selected:`;
+      countText.textContent = `${formData.vehicleImages.length} image(s) selected:`;
       countText.style.marginBottom = "10px";
       imagePreviewDiv.appendChild(countText);
 
-      // Show thumbnails
-      Array.from(regImages).forEach((file) => {
+      formData.vehicleImages.forEach((file) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = document.createElement("img");
@@ -335,9 +362,20 @@ function loadRegistrationUpload() {
           imagePreviewDiv.appendChild(img);
         };
         reader.readAsDataURL(file);
-
       });
     }
+  }
+
+  function checkRegistrationDetails() {
+    const regNumber = registrationNumberInput.value.trim();
+    const regImages = registrationImageInput.files;
+
+    if (regNumber !== "" && formData.vehicleImages.length > 0) {
+      registrationButton.style.display = "block";
+    } else {
+      registrationButton.style.display = "none";
+    }
+
   }
 
   // Update formData and check for completeness
@@ -364,8 +402,9 @@ function loadRegistrationUpload() {
     }
 
     formData.vehicleImages = formData.vehicleImages.concat(filesToAdd);
-    checkRegistrationDetails();
+    renderImagePreview();
     registrationImageInput.value = "";
+    checkRegistrationDetails();
   });
 }
 
@@ -458,9 +497,6 @@ loadContactDetails();
 
 
 
-
-
-
 // submit form
 function submitForm() {
   // Validate required fields
@@ -525,86 +561,16 @@ function submitForm() {
     method: "POST",
     body: formPayload,
   })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      alert(
-        "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon."
-      );
-    })
-    .catch((error) => console.log(error));
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    alert(
+      "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon."
+    );
+  })
+  .catch((error) => console.log(error));
 }
 
-
-
-// Submit form function
-// function submitForm() {
-//   // Log form data (in real app, send to server)
-//   //   console.log("Form Data:", formData);
-
-//   // Validate required fields again
-//   if (!formData.fullName || !formData.mobileNumber || !formData.emailAddress) {
-//     alert("Please fill in all required fields");
-//     return;
-//   }
-
-//   let formPayload = new FormData();
-
-//   formPayload.append(
-//     "data",
-
-//     new Blob(
-//       [
-//         JSON.stringify({
-//           vehicleBrand: formData.brand,
-//           vehicleModel: formData.model,
-//           vehicleModelYear: formData.year,
-//           vehicleColour: formData.color,
-//           vehiclePurchasedDate: formData.purchaseDate,
-//           vehiclePurchasedAmount: formData.purchaseAmount,
-//           vehicleOwnerType: formData.owner,
-//           vehicleRegisterNumber: formData.registrationNumber,
-//           vehicleInspectionBranch: formData.inspectionLocation,
-//           vehicleInspectionDate: formData.inspectionDate,
-//           userName: formData.fullName,
-//           userPhoneNo: formData.mobileNumber,
-//           userEmail: formData.emailAddress,
-//         }),
-//       ],
-//       { type: "application/json" }
-//     )
-//   );
-
-//   for (let file of formData.vehicleImages || []) {
-//     formPayload.append("documents", file);
-//   }
-
-//   for (let [key, value] of formPayload.entries()) {
-//     if (value instanceof Blob && value.type === "application/json") {
-//       // Read the JSON blob content
-//       value.text().then((text) => {
-//         console.log(`${key}:`, JSON.parse(text));
-//       });
-//     } else if (value instanceof File) {
-//       console.log(`${key}: File -> ${value.name}, size: ${value.size} bytes`);
-//     } else {
-//       console.log(`${key}:`, value);
-//     }
-//   }
-
-//   fetch("http://localhost:8080/api/vehicle/addVehicle", {
-//     method: "POST",
-//     body: formPayload,
-//   })
-//     .then((res) => res.json())
-//     .then((data) => {
-//       console.log(data);
-//       alert(
-//         "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon."
-//       );
-//     })
-//     .catch((error) => console.log(error));
-// }
 
 // Initialize the form
 document.addEventListener("DOMContentLoaded", function () {
