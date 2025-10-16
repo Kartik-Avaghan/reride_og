@@ -490,7 +490,7 @@ function submitForm() {
     userName: formData.fullName,
     userPhoneNo: formData.mobileNumber,
     userEmail: formData.emailAddress,
-    userRole: formData.role || "CUSTOMER", // optional
+    // userRole: formData.role || "CUSTOMER", // optional
   };
 
   // Append vehicle and user as separate blobs
