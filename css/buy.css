@@ -5,23 +5,6 @@ body {
   background: #fff;
 }
 
-
-.assured-band{
-  text-align:start; 
-  padding:10px; 
-  border-top:1px solid rgb(245, 211, 211);
-  border-right:1px solid rgb(245, 211, 211);
-  border-left:1px solid rgb(245, 211, 211); 
-  border-radius:10px 10px 0 0; 
-  background-color:#FAF2F0; 
-  height:40px; 
-  width:95%;
-  font-size:14px;
-  font-weight: 500;
-  margin:0 auto; 
-  display:block;
-}
-
 .card{
   border-bottom:1px solid black;
   width:100%;
@@ -43,9 +26,56 @@ body {
   font-size: 14px;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .book-btn:hover {
   background-color: #fff;
   color: #0A1F58;
+}
+
+
+
+/* new  */
+
+.vehicle-card {
+  border-radius: 14px;
+}
+
+.vehicle-card:hover {
+  /* transform: translateY(-5px); */
+  cursor: pointer;
+  box-shadow: 10px 10px 20px rgb(0, 0, 0);
+}
+
+.vehicle-image img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.assured-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #0A1F58;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.rating i {
+  font-size: 13px;
+}
+
+.card-footer .btn {
+  background-color: #0d6efd;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card-footer .btn:hover {
+  background-color: #0b5ed7;
 }

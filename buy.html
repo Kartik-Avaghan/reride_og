@@ -262,6 +262,7 @@
       id="incoming-search-display"
       style="margin: 1em 0; font-weight: bold"
     ></div>
+
     <!-- Footer -->
     <footer>
       <p>&copy; 2025 <strong style="color: #0a1f58">ReRide</strong>.</p>
@@ -330,6 +331,7 @@
       const owner = v["Owner Type"] || "N/A";
       const reg = v["Vehicle Reg No"] || "";
       const imgSrc = v.img || "";
+      const id = v.id || "";
 
       const wrapper = document.createElement("div");
       wrapper.className = "col-12 col-sm-6 col-md-3"; // 4 per row on md+
@@ -389,68 +391,60 @@
       //     `;
 
       wrapper.innerHTML = `
-  <div class="model_m clearfix" style="background-color:#fff;">
+  <div class="vehicle-card card shadow-sm border-0 overflow-hidden">
+  <!-- Image Section -->
+  ${imgSrc
+    ? `
+  <div class="vehicle-image position-relative">
+    <img src="${imgSrc}" alt="${title}" class="card-img-top img-fluid" />
+      <div class="assured-badge">Re-Ride Assured</div>
+    </div>`
+    : ""
+  }
 
-    ${
-      imgSrc
-        ? `
-      <div style="text-align:center;">
-        <img src="${imgSrc}" alt="${title}" style="height:200px; width:280px;  border-radius:10px 10px 0 0; box-shadow:0 2px 10px rgba(0,0,0,0.1);" />
-      </div>`
-        : ""
-    }
-
-    <!-- DriveX Assured strip -->
-    <div class ="assured-band">
-      Re-Ride Assured
+  <!-- Card Body -->
+  
+  <div class="card-body">
+    <!-- Title & Price -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="card-title fw-semibold mb-1">${title}</h5>
+        <div class="rating text-warning small">
+          <i class="fa fa-star"></i><i class="fa fa-star"></i>
+          <i class="fa fa-star"></i><i class="fa fa-star"></i>
+          <i class="fa fa-star-half-o"></i>
+          </div>
+      </div>
+      <div class="text-end">
+        <h4 class="text-primary mb-0"><i class="fa fa-rupee-sign"></i> ${price}</h4>
+        <small class="text-muted">Price</small>
+      </div>
     </div>
 
-    <!-- Main container -->
-    <div class="card ">
-      <!-- Title & Price -->
-      <div class="model_pg1i2 row" style="margin:0;">
-        <div class="col-6">
-          <div class="model_pg1i2l">
-            <h5 style="font-size:20px; margin:0;">${title}</h5>
-            <span class="font_12 col_yell">
-              <i class="fa fa-star"></i><i class="fa fa-star"></i>
-              <i class="fa fa-star"></i><i class="fa fa-star"></i>
-              <i class="fa fa-star-half-o"></i>
-            </span>
-          </div>
-        </div>
-        <div class="col-6 text-end">
-          <h3 class="mb-1"><i class="fa fa-rupee col_oran"></i> ${price}</h3>
-          <h6 class="mb-0 font_14">price</h6>
-        </div>
+    <!-- Divider -->
+    <hr class="my-2" />
+
+    <!-- Vehicle Specs -->
+    <div class="row gy-2">
+      <div class="col-6">
+        <p class="mb-1"><i class="fa fa-car text-primary me-1"></i> ${type}</p>
+        <p class="mb-0 text-muted small"><i class="fa fa-calendar text-primary me-1"></i> Model: ${modelYear}</p>
       </div>
-
-      <!-- Specs -->
-      <div class="model_pg1i3 row mt-1 mb-1" style="margin:0;">
-        <div class="col-6">
-          <h6><i class="fa fa-car col_oran me-1"></i> ${type}</h6>
-          <h6 class="mb-0 mt-2"><i class="fa fa-calendar col_oran me-1"></i> Model Year: ${modelYear}</h6>
-        </div>
-        <div class="col-6 text-end">
-          <h6><i class="fa fa-tachometer col_oran me-1"></i> Mileage: ${mileage}</h6>
-          <h6 class="mb-0 mt-1"><i class="fa fa-user col_oran me-1"></i> Owner: ${owner}</h6>
-        </div>
+      <div class="col-6 text-end">
+        <p class="mb-1"><i class="fa fa-tachometer text-primary me-1"></i> ${mileage} Km/l</p>
+        <p class="mb-0 text-muted small"><i class="fa fa-user text-primary me-1"></i> Owner: ${owner}</p>
       </div>
-
-      <hr>
-
-      <!-- Footer -->
-      <div class="model_pg1i4 row text-center " style="margin:0;">
-        <div class="col-12">
-          <p class="mb-1"><small>Reg No: ${reg}</small></p>
-         <h6 class="mb-0">
-  <a class="book-btn" href="#">Book Ride <i class="fa fa-check-circle ms-1"></i></a>
-</h6>
-        </div>
-      </div>
-
     </div>
   </div>
+
+  <!-- Footer -->
+  <div class="card-footer bg-white border-0 text-center">
+    <small class="text-muted d-block mb-3">Reg No: ${reg}</small>
+    <a href="/bikeDetails.html?id=${id}" class=" px-4 py-2  shadow-sm book-btn">
+      <i class="fa fa-check-circle me-1"></i> Book Ride
+    </a>
+  </div>
+</div>
 `;
 
       return wrapper;
