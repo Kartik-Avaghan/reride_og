@@ -526,7 +526,7 @@ function submitForm() {
     userName: formData.fullName,
     userPhoneNo: formData.mobileNumber,
     userEmail: formData.emailAddress,
-    // userRole: formData.role || "CUSTOMER", // optional
+    userRole: "USER",
   };
 
   // Append vehicle and user as separate blobs
@@ -545,6 +545,10 @@ function submitForm() {
     formPayload.append("documents", file);
   }
 
+  formPayload.append(
+    "inspection" , new Blob([JSON.stringify({})], {type: "application/json"})
+  )
+
   // Optional: log content for debugging
   for (let [key, value] of formPayload.entries()) {
     if (value instanceof Blob && value.type === "application/json") {
@@ -557,7 +561,7 @@ function submitForm() {
   }
 
   // Send request
-  fetch("http://localhost:8080/api/vehicle/addVehicle", {
+  fetch("http://localhost:8080/vehicle/addVehicle", {
     method: "POST",
     body: formPayload,
   })
