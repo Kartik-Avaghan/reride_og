@@ -149,11 +149,11 @@ function selectOption(type, value, stepNumber) {
 }
 
 function nextStep(step) {
-  if (step < 9) {
+  if (step < 10) {
     document.getElementById(`step${step}`).classList.remove("active");
     currentStep = step + 1;
     document.getElementById(`step${currentStep}`).classList.add("active");
-    document.getElementById("stepCounter").textContent = `${currentStep}/9`;
+    document.getElementById("stepCounter").textContent = `${currentStep}/10`;
     updateTabs();
     document.getElementById("backBtn").style.display =
       currentStep > 1 ? "block" : "none";
@@ -188,27 +188,30 @@ function updateTabs() {
 function loadStepContent() {
   switch (currentStep) {
     case 2: // After brand
+      // Vehicle type step doesn't need any dynamic loading
+      break;
+    case 3: // After vehicle type
       loadModels();
       break;
-    case 3: // After model
+    case 4: // After model
       loadYears();
       break;
-    case 4: // Vehicle colour
+    case 5: // Vehicle colour
       loadColors();
       break;
-    case 5: // Purchase details
+    case 6: // Purchase details
       loadPurchaseDetails();
       break;
-    case 6: // Owner details
+    case 7: // Owner details
       loadOwnerDetails();
       break;
-    case 7: // Registration + image
+    case 8: // Registration + image
       loadRegistrationUpload();
       break;
-    case 8: // Inspection date + location
+    case 9: // Inspection date + location
       loadInspectionDetails();
       break;
-    case 9: // Contact
+    case 10: // Contact
       break;
   }
 }
@@ -223,7 +226,7 @@ function loadModels() {
     const modelItem = document.createElement("div");
     modelItem.className = "model-item";
     modelItem.textContent = model;
-    modelItem.onclick = () => selectOption("model", model, 2);
+    modelItem.onclick = () => selectOption("model", model, 3);
     modelList.appendChild(modelItem);
   });
 }
@@ -265,7 +268,7 @@ function loadYears() {
     const yearItem = document.createElement("div");
     yearItem.className = "rto-item";
     yearItem.textContent = year;
-    yearItem.onclick = () => selectOption("year", year, 3);
+    yearItem.onclick = () => selectOption("year", year, 4);
     yearGrid.appendChild(yearItem);
   });
 }
@@ -287,7 +290,7 @@ function loadColors() {
     const colorItem = document.createElement("div");
     colorItem.className = "model-item";
     colorItem.textContent = color;
-    colorItem.onclick = () => selectOption("color", color, 4);
+    colorItem.onclick = () => selectOption("color", color, 5);
     colorGrid.appendChild(colorItem);
   });
 }
@@ -519,6 +522,7 @@ function submitForm() {
     vehicleRegisterNumber: formData.registrationNumber,
     vehicleInspectionBranch: formData.inspectionLocation,
     vehicleInspectionDate: formData.inspectionDate,
+    vehicleType: formData.vehicleType,
   };
 
   // --- User JSON ---

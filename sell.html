@@ -115,6 +115,7 @@
 
           <div class="step-tabs" id="stepTabs">
             <div class="step-tab active">Brand</div>
+            <div class="step-tab">Vehicle Type</div>
             <div class="step-tab">Model</div>
             <div class="step-tab">Model Year</div>
             <div class="step-tab">Colour</div>
@@ -128,7 +129,7 @@
 
         <!-- Form Content -->
         <div class="form-content">
-          <div class="step-counter" id="stepCounter">1/13</div>
+          <div class="step-counter" id="stepCounter">1/14</div>
 
           <!-- Step 1: Brand Selection -->
           <div class="step-content active" id="step1">
@@ -238,8 +239,31 @@
             </div>
           </div>
 
-          <!-- Step 2: Model Selection -->
+          <!-- Step 2: Vehicle Type Selection -->
           <div class="step-content" id="step2">
+            <h2 class="step-title">
+              Select the <span class="highlight">Type</span> of your two-wheeler
+            </h2>
+            <div class="options-grid" id="vehicleTypeGrid">
+              <div
+                class="option-card"
+                onclick="selectOption('vehicleType', 'Bike', 2)"
+              >
+                <div class="brand-logo"><i class="fas fa-motorcycle"></i></div>
+                <h5>Bike</h5>
+              </div>
+              <div
+                class="option-card"
+                onclick="selectOption('vehicleType', 'Scooter', 2)"
+              >
+                <div class="brand-logo"><i class="fas fa-bicycle"></i></div>
+                <h5>Scooter</h5>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Model Selection -->
+          <div class="step-content" id="step3">
             <h2 class="step-title">
               Select the <span class="highlight">Model</span> of your
               two-wheeler
@@ -260,7 +284,7 @@
           </div>
 
           <!-- Step 4: Year Selection -->
-          <div class="step-content" id="step3">
+          <div class="step-content" id="step4">
             <h2 class="step-title">
               Select the <span class="highlight">Year</span> of your two-wheeler
             </h2>
@@ -290,7 +314,7 @@
             </div>
           </div> -->
 
-          <div id="step4" class="step-content">
+          <div id="step5" class="step-content">
             <h2>Select Vehicle Colour</h2>
             <div
               id="colorGrid"
@@ -299,7 +323,7 @@
           </div>
 
           <!-- Step 5: State Selection -->
-          <div class="step-content" id="step5">
+          <div class="step-content" id="step6">
             <h2 class="mb-4">Enter Purchase Details</h2>
             <div class="mb-3">
               <label for="purchaseYear" class="form-label">Purchase Date</label>
@@ -325,7 +349,7 @@
                 id="purchase-btn"
                 class="continue-btn"
                 style="display: none;"
-                onclick="nextStep(5)"
+                onclick="nextStep(6)"
               >
                 Next
               </button>
@@ -333,35 +357,35 @@
           </div>
 
           <!-- Step 6: Owner Selection -->
-          <div class="step-content" id="step6">
+          <div class="step-content" id="step7">
             <h2 class="step-title">
               Select <span class="highlight">Owner</span> type
             </h2>
             <div class="options-grid">
               <div
                 class="option-card"
-                onclick="selectOption('owner', '1st Owner', 6)"
+                onclick="selectOption('owner', '1st Owner', 7)"
               >
                 <div class="brand-logo">1st</div>
                 <h5>1st Owner</h5>
               </div>
               <div
                 class="option-card"
-                onclick="selectOption('owner', '2nd Owner',6)"
+                onclick="selectOption('owner', '2nd Owner',7)"
               >
                 <div class="brand-logo">2nd</div>
                 <h5>2nd Owner</h5>
               </div>
               <div
                 class="option-card"
-                onclick="selectOption('owner', '3rd Owner', 6)"
+                onclick="selectOption('owner', '3rd Owner', 7)"
               >
                 <div class="brand-logo">3rd</div>
                 <h5>3rd Owner</h5>
               </div>
               <div
                 class="option-card"
-                onclick="selectOption('owner', '4+ Owner', 6)"
+                onclick="selectOption('owner', '4+ Owner', 7)"
               >
                 <div class="brand-logo">4+</div>
                 <h5>4+ Owner</h5>
@@ -370,7 +394,7 @@
           </div>
 
           <!-- Step 12: Photos -->
-          <div class="step-content" id="step7">
+          <div class="step-content" id="step8">
             <h2 class="step-title">Vehicle Registration & Photos</h2>
 
             <div class="mb-3">
@@ -416,14 +440,14 @@
               <button
                 class="continue-btn"
                 id="registration-btn"
-                onclick="nextStep(7)"
+                onclick="nextStep(8)"
               >
                 Continue
               </button>
             </div>
           </div>
 
-          <div id="step8" class="step-content">
+          <div id="step9" class="step-content">
             <h2>Inspection Details</h2>
             <div class="flex flex-col gap-4">
               <div class="mb-3">
@@ -441,14 +465,14 @@
               <button
                 class="continue-btn"
                 id="inspection-btn"
-                onclick="nextStep(8)"
+                onclick="nextStep(9)"
               >
                 Continue
               </button>
             </div>
           </div>
 
-          <div class="step-content" id="step9">
+          <div class="step-content" id="step10">
             <h2 class="step-title">
               Contact <span class="highlight">Information</span>
             </h2>
