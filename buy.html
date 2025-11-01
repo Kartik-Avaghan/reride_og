@@ -277,267 +277,105 @@
   <script src="./js/nav.js"></script>
 
   <script>
-    // parse query string
-    function getQueryParam(name) {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
-    }
-
     let vehiclesData = [];
 
-    function parseNum(v) {
-      if (v == null || v === "" || v === "N/A") return null;
-      const n = Number(String(v).replace(/,/g, "").trim());
-      return isNaN(n) ? null : n;
-    }
-
-    function clean(el, placeholderRegex) {
-      if (!el) return "";
-      const v = el.value.trim();
-      if (!v || (placeholderRegex && placeholderRegex.test(v))) return "";
-      return v;
-    }
-
-    // load JSON
-    fetch("./json/vehicles.json")
+    // Fetch vehicles
+    fetch("http://localhost:8080/vehicle/website/getVehicles")
       .then((r) => {
-        if (!r.ok) throw new Error("Failed to load vehicles.json");
+        if (!r.ok) throw new Error("Failed to load vehicles");
         return r.json();
       })
       .then((d) => {
-        vehiclesData = Array.isArray(d.vehicles) ? d.vehicles : [];
-        // if there's a query param, optionally inject into a search box
-        const searchTerm = getQueryParam("q");
-        if (searchTerm) {
-          const input = document.getElementById("sellSearch");
-          if (input) input.value = decodeURIComponent(searchTerm);
-        }
-        applyFiltersAndRender();
+        console.log(d);
+        vehiclesData = Array.isArray(d) ? d : [];
+        renderVehicles(vehiclesData);
       })
       .catch((err) => {
         console.error(err);
         const container = document.getElementById("results");
         if (container)
           container.innerHTML =
-            '<div class="col-12">Unable to load vehicles.</div>';
+            '<div class="col-12 text-center text-danger">Unable to load vehicles.</div>';
       });
 
+    // Build one vehicle card
     function buildCard(v) {
-      const title = `${v.Brand || ""} ${v.modelName || ""}`.trim();
-      const price = v.price != null ? v.price : "N/A";
-      const type = v.type || "N/A";
-      const modelYear = v["Model Year"] || "N/A";
-      const mileage = v.actualKms || v.correctedKms || "N/A";
-      const owner = v["Owner Type"] || "N/A";
-      const reg = v["Vehicle Reg No"] || "";
-      const imgSrc = v.img || "";
-      const id = v.id || "";
+      const {
+        vehicleId,
+        vehicleModel,
+        vehicleType,
+        vehicleBrand,
+        vehicleOutLetPrice,
+        modelYear,
+        mileage,
+        owner,
+        regNo,
+        vehicleImage,
+      } = v;
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "col-12 col-sm-6 col-md-3"; // 4 per row on md+
-      //         wrapper.innerHTML = `
-      //       <div class="model_m  clearfix   " style="background-color: #fff;">
-      //         ${imgSrc ? `<div style="text-align:center; ">
-      //           <img src="${imgSrc}" alt="${title}" style=" height:200px;  width:280px;  " />
-      //         </div>` : ''}
-      //         </div>
-      //         <div style="width:93%;text-align:start; padding:8px; border-top: 1px solid rgb(218, 112, 214);
-      // border-right: 1px solid rgb(218, 112, 214);
-      // border-left: 1px solid rgb(218, 112, 214); border-radius:10px 10px 0 0; background-color:rgb(216, 202, 216); height:40px; color:rgb(218, 112, 214); font-size:14px" >DriveX Assured</div>
+      const imgArray =
+        typeof vehicleImage === "string" ? JSON.parse(vehicleImage) : vehicleImage;
+      const imgSrc =
+        imgArray && imgArray.length
+          ? `http://localhost:8080/uploads/${imgArray[0]}`
+          : "./images/no-image.png";
 
-      // <div style="border:1px solid gray; border-radius:12px; width:100%; padding:10px;">
-      //         <div class="model_pg1i2 row">
-      //           <div class="col-6">
-      //             <div class="model_pg1i2l">
-      //               <h3 style="font-size: 20px; margin:0;">${title}</h3>
-      //               <span class="font_12 col_yell">
-      //                 <i class="fa fa-star"></i><i class="fa fa-star"></i>
-      //                 <i class="fa fa-star"></i><i class="fa fa-star"></i>
-      //                 <i class="fa fa-star-half-o"></i>
-      //               </span>
-      //             </div>
-      //           </div>
-      //           <div class="col-6">
-      //             <div class="model_pg1i2r text-end">
-      //               <h3 class="mb-1"><i class="fa fa-rupee col_oran"></i> ${price}</h3>
-      //               <h6 class="mb-0 font_14">price</h6>
-      //             </div>
-      //           </div>
-      //         </div>
-      //         <div class="model_pg1i3 row mt-3 mb-3">
-      //           <div class="col-6">
-      //             <div class="model_pg1i3l">
-      //               <h6><i class="fa fa-car col_oran me-1"></i> ${type}</h6>
-      //               <h6 class="mb-0 mt-2"><i class="fa fa-calendar col_oran me-1"></i>Model Year:${modelYear}</h6>
-      //             </div>
-      //           </div>
-      //           <div class="col-6">
-      //             <div class="model_pg1i3l text-end">
-      //               <h6><i class="fa fa-tachometer col_oran me-1"></i> Mileage: ${mileage}</h6>
-      //               <h6 class="mb-0 mt-2"><i class="fa fa-user col_oran me-1"></i> Owner: ${owner}</h6>
-      //             </div>
-      //           </div>
-      //         </div>
-      //         <hr>
-      //         <div class="model_pg1i4 row text-center mt-2">
-      //           <div class="col-12">
-      //             <p class="mb-1"><small>Reg No: ${reg}</small></p>
-      //             <h6 class="mb-0">
-      //               <a class="button btn" href="#">Book Ride <i class="fa fa-check-circle ms-1"></i></a>
-      //             </h6>
-      //           </div>
-      //         </div>
-      //       </div>
-      //     `;
-
-      wrapper.innerHTML = `
-  <div class="vehicle-card card shadow-sm border-0 overflow-hidden">
-  <!-- Image Section -->
-  ${imgSrc
-    ? `
-  <div class="vehicle-image position-relative">
-    <img src="${imgSrc}" alt="${title}" class="card-img-top img-fluid" />
-      <div class="assured-badge">Re-Ride Assured</div>
-    </div>`
-    : ""
-  }
-
-  <!-- Card Body -->
-  
-  <div class="card-body">
-    <!-- Title & Price -->
-    <div class="d-flex justify-content-between align-items-start mb-2">
-      <div>
-        <h5 class="card-title fw-semibold mb-1">${title}</h5>
-        <div class="rating text-warning small">
-          <i class="fa fa-star"></i><i class="fa fa-star"></i>
-          <i class="fa fa-star"></i><i class="fa fa-star"></i>
-          <i class="fa fa-star-half-o"></i>
+      return `
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="vehicle-card card shadow-sm border-0 overflow-hidden h-100">
+          <div class="vehicle-image position-relative">
+            <img src="${imgSrc}" alt="${vehicleModel}" class="card-img-top img-fluid" />
+            <div class="assured-badge">Re-Ride Assured</div>
           </div>
-      </div>
-      <div class="text-end">
-        <h4 class="text-primary mb-0"><i class="fa fa-rupee-sign"></i> ${price}</h4>
-        <small class="text-muted">Price</small>
-      </div>
-    </div>
 
-    <!-- Divider -->
-    <hr class="my-2" />
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h5 class="card-title fw-semibold mb-1">${vehicleBrand} ${vehicleModel}</h5>
+              </div>
+              <div class="text-end">
+                <h4 class="text-primary mb-0"><i class="fa fa-rupee-sign"></i> ${vehicleOutLetPrice}</h4>
+                <small class="text-muted">Price</small>
+              </div>
+            </div>
 
-    <!-- Vehicle Specs -->
-    <div class="row gy-2">
-      <div class="col-6">
-        <p class="mb-1"><i class="fa fa-car text-primary me-1"></i> ${type}</p>
-        <p class="mb-0 text-muted small"><i class="fa fa-calendar text-primary me-1"></i> Model: ${modelYear}</p>
+            <hr class="my-2" />
+
+            <div class="row gy-2">
+              <div class="col-6">
+                <p class="mb-1"><i class="fa fa-car text-primary me-1"></i> ${vehicleType}</p>
+                <p class="mb-0 text-muted small"><i class="fa fa-calendar text-primary me-1"></i> ${modelYear}</p>
+              </div>
+              <div class="col-6 text-end">
+                <p class="mb-1"><i class="fa fa-tachometer text-primary me-1"></i> ${mileage} km/l</p>
+                <p class="mb-0 text-muted small"><i class="fa fa-user text-primary me-1"></i> Owner: ${owner}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer bg-white border-0 text-center">
+            <small class="text-muted d-block mb-3">Reg No: ${regNo}</small>
+            <a href="/bikeDetails.html?id=${vehicleId}" class="px-4 py-2 shadow-sm book-btn btn btn-outline-primary">
+              <i class="fa fa-check-circle me-1"></i> Book Ride
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="col-6 text-end">
-        <p class="mb-1"><i class="fa fa-tachometer text-primary me-1"></i> ${mileage} Km/l</p>
-        <p class="mb-0 text-muted small"><i class="fa fa-user text-primary me-1"></i> Owner: ${owner}</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="card-footer bg-white border-0 text-center">
-    <small class="text-muted d-block mb-3">Reg No: ${reg}</small>
-    <a href="/bikeDetails.html?id=${id}" class=" px-4 py-2  shadow-sm book-btn">
-      <i class="fa fa-check-circle me-1"></i> Book Ride
-    </a>
-  </div>
-</div>
-`;
-
-      return wrapper;
+    `;
     }
 
-    function applyFiltersAndRender() {
-      const brand = clean(
-        document.getElementById("select-brand"),
-        /^Select\s+Vehicle\s+Brand$/i
-      ).toLowerCase();
-      const model = clean(
-        document.getElementById("select-model"),
-        /^Select\s+Model$/i
-      ).toLowerCase();
-      const type = clean(
-        document.getElementById("select-type"),
-        /^Seach\s+Type$/i
-      ).toLowerCase();
-      const priceInput = (document.getElementById("price")?.value || "").trim();
-      const modelYearInput = (
-        document.getElementById("modelYear")?.value || ""
-      ).trim();
-      const mileageInput = (
-        document.getElementById("mileage")?.value || ""
-      ).trim();
-      const searchTermRaw = getQueryParam("q") || "";
-      const freeText = searchTermRaw.trim().toLowerCase();
-
-      const maxPrice = parseNum(priceInput);
-      const minYear = parseNum(modelYearInput);
-      const minMileage = parseNum(mileageInput);
-
-      const filtered = vehiclesData.filter((v) => {
-        if (brand && (!v.Brand || v.Brand.toLowerCase() !== brand))
-          return false;
-        if (model && (!v.modelName || v.modelName.toLowerCase() !== model))
-          return false;
-        if (type && (!v.type || v.type.toLowerCase() !== type)) return false;
-        if (maxPrice != null) {
-          const vp = parseNum(v.price);
-          if (vp == null || !(vp < maxPrice)) return false;
-        }
-        if (minYear != null) {
-          const vy = parseNum(v["Model Year"]);
-          if (vy == null || !(vy > minYear)) return false;
-        }
-        if (minMileage != null) {
-          const vm = parseNum(v.actualKms ?? v.correctedKms ?? "");
-          if (vm == null || !(vm > minMileage)) return false;
-        }
-        if (freeText) {
-          const matches = [
-            v.Brand,
-            v.modelName,
-            v.type,
-            v["Vehicle Reg No"],
-            v["Owner Type"],
-            v["Model Year"],
-            v["Purchased.Date"],
-          ].some((field) => {
-            if (field == null) return false;
-            return String(field).toLowerCase().includes(freeText);
-          });
-          if (!matches) return false;
-        }
-        return true;
-      });
-
+    // Render all vehicles
+    function renderVehicles(data) {
       const container = document.getElementById("results");
       if (!container) return;
-      container.innerHTML = "";
-      if (!filtered.length) {
+
+      if (!data || data.length === 0) {
         container.innerHTML =
-          '<div class="col-12"><div class="alert alert-warning">No vehicles found.</div></div>';
+          '<div class="col-12 text-center text-muted">No vehicles available.</div>';
         return;
       }
-      filtered.forEach((v) => container.appendChild(buildCard(v)));
+
+      container.innerHTML = data.map((v) => buildCard(v)).join("");
     }
-
-    // optional: update on filter change
-    [
-      "select-brand",
-      "select-model",
-      "select-type",
-      "price",
-      "modelYear",
-      "mileage",
-    ].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener("change", applyFiltersAndRender);
-    });
-
-    // on load also reflect URL param search if any (e.g., user might want immediate free-text)
-    document.addEventListener("DOMContentLoaded", applyFiltersAndRender);
   </script>
 </html>
