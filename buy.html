@@ -306,15 +306,17 @@
         vehicleType,
         vehicleBrand,
         vehicleOutLetPrice,
-        modelYear,
-        mileage,
-        owner,
-        regNo,
+        vehicleRegisterNumber,
+        vehicleModelYear,
+        vehicleMileage,
+        vehicleOwnerType,
         vehicleImage,
       } = v;
 
       const imgArray =
-        typeof vehicleImage === "string" ? JSON.parse(vehicleImage) : vehicleImage;
+        typeof vehicleImage === "string"
+          ? JSON.parse(vehicleImage)
+          : vehicleImage;
       const imgSrc =
         imgArray && imgArray.length
           ? `http://localhost:8080/uploads/${imgArray[0]}`
@@ -332,29 +334,29 @@
             <div class="d-flex justify-content-between align-items-start mb-2">
               <div>
                 <h5 class="card-title fw-semibold mb-1">${vehicleBrand} ${vehicleModel}</h5>
+                <p class="mb-1 text-muted small"> ${vehicleType}</p>
               </div>
               <div class="text-end">
-                <h4 class="text-primary mb-0"><i class="fa fa-rupee-sign"></i> ${vehicleOutLetPrice}</h4>
-                <small class="text-muted">Price</small>
+                <h4 class=" mb-0 price">&#8377;${vehicleOutLetPrice}</h4>
               </div>
             </div>
 
             <hr class="my-2" />
 
-            <div class="row gy-2">
+            <div class="row gy-1">
               <div class="col-6">
-                <p class="mb-1"><i class="fa fa-car text-primary me-1"></i> ${vehicleType}</p>
-                <p class="mb-0 text-muted small"><i class="fa fa-calendar text-primary me-1"></i> ${modelYear}</p>
+                
+                <p class="mb-0 text-muted small"><i class="fa fa-calendar text-primary me-1"></i> ${vehicleModelYear}</p>
               </div>
               <div class="col-6 text-end">
-                <p class="mb-1"><i class="fa fa-tachometer text-primary me-1"></i> ${mileage} km/l</p>
-                <p class="mb-0 text-muted small"><i class="fa fa-user text-primary me-1"></i> Owner: ${owner}</p>
+                <p class="mb-1"><i class="fa fa-tachometer text-primary me-1"></i> Milage: ${vehicleMileage} km/l</p>
+                <p class="mb-0 text-muted small text-nowrap"><i class="fa fa-user text-primary me-1"></i> Owner: ${vehicleOwnerType}</p>
               </div>
             </div>
           </div>
 
           <div class="card-footer bg-white border-0 text-center">
-            <small class="text-muted d-block mb-3">Reg No: ${regNo}</small>
+            <small class="text-muted d-block mb-2 fw-bold">Reg No: ${vehicleRegisterNumber}</small>
             <a href="/bikeDetails.html?id=${vehicleId}" class="px-4 py-2 shadow-sm book-btn btn btn-outline-primary">
               <i class="fa fa-check-circle me-1"></i> Book Ride
             </a>

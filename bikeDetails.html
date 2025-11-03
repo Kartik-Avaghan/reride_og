@@ -129,13 +129,14 @@
     // Fetch vehicle data from backend
     async function fetchVehicleData(vehicleId) {
       try {
-        const response = await fetch(`http://localhost:8080/vehicles/${vehicleId}`);
+        const response = await fetch(`http://localhost:8080/vehicle/website/getVehicle/${vehicleId}`);
         
         if (!response.ok) {
           throw new Error('Vehicle not found');
         }
         
         const data = await response.json();
+        console.log('Fetched vehicle data:', data);
         return data;
       } catch (error) {
         console.error('Error fetching vehicle data:', error);
@@ -186,7 +187,7 @@
         <!-- Price Section -->
         <div class="price-section">
           <div class="price-label">Vehicle Price</div>
-          <div class="price-value">${formatPrice(vehicle.price)}</div>
+          <div class="price-value">${formatPrice(vehicle.vehicleOutLetPrice)}</div>
         </div>
 
         <!-- Specifications -->
@@ -226,14 +227,6 @@
               </div>
               <div class="spec-label">Colour</div>
               <div class="spec-value">${vehicle.vehicleColour || 'N/A'}</div>
-            </div>
-
-            <div class="spec-card">
-              <div class="spec-icon">
-                <i class="fas fa-shopping-cart"></i>
-              </div>
-              <div class="spec-label">Purchase Date</div>
-              <div class="spec-value">${formatDate(vehicle.vehiclePurchasedDate)}</div>
             </div>
 
             <div class="spec-card">
@@ -282,22 +275,16 @@
     // Load vehicle images
     function loadVehicleImages(vehicle) {
       const imagesContainer = document.getElementById('bikeImages');
-      
+      let images = JSON.parse(vehicle.vehicleImage);
+      console.log('Vehicle images:', images);
       // Check if vehicle has images
-      if (vehicle.images && vehicle.images.length > 0) {
-        imagesContainer.innerHTML = vehicle.images.map(imageUrl => `
+      if (images && images.length > 0) {
+        imagesContainer.innerHTML = images.map(imageUrl => `
           <div class="swiper-slide">
-            <img src="${imageUrl}" alt="Vehicle Image" onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
+            <img src="http://localhost:8080/uploads/${imageUrl}" alt="Vehicle Image" ">
           </div>
         `).join('');
-      } else {
-        // Default placeholder if no images
-        imagesContainer.innerHTML = `
-          <div class="swiper-slide">
-            <img src="https://via.placeholder.com/800x600?text=${vehicle.vehicleBrand}+${vehicle.vehicleModel}" alt="Vehicle Placeholder">
-          </div>
-        `;
-      }
+      } 
 
       // Initialize Swiper after images are loaded
       if (swiper) {
@@ -314,7 +301,7 @@
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
         },
-        autoplay: vehicle.images && vehicle.images.length > 1 ? {
+        autoplay: images && images.length > 1 ? {
           delay: 3500,
           disableOnInteraction: false,
         } : false,
@@ -342,17 +329,7 @@
     // Initialize page
     async function initializePage() {
       const vehicleId = getVehicleIdFromUrl();
-      
-      // Use dummy data for now (comment out when API is ready)
-      setTimeout(() => {
-        loadVehicleImages(dummyVehicleData);
-        renderVehicleDetails(dummyVehicleData);
-      }, 800); // Simulate loading delay
-      
-      return; // Remove this return when API is ready
-      
-      // Uncomment below when API is ready
-      /*
+            
       if (!vehicleId) {
         displayError('No vehicle ID provided in URL. Please add ?id=YOUR_VEHICLE_ID to the URL.');
         return;
@@ -365,7 +342,7 @@
       } catch (error) {
         displayError('Unable to load vehicle details. Please check if the vehicle ID is correct and the server is running.');
       }
-      */
+    
     }
 
     // Load data when page loads
