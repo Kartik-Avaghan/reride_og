@@ -10,6 +10,86 @@ body {
   overflow-x: hidden;
 }
 
+/* Test Ride Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.modal-content {
+  background-color: #fff;
+  /* margin: 10% auto; */
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #555;
+}
+
+.test-ride-form .form-group {
+  margin-bottom: 20px;
+}
+
+.test-ride-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 500;
+}
+
+.test-ride-form .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.test-ride-form .form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 .vehicle-details-wrapper {
   display: flex;
   height: 100vh;
@@ -353,8 +433,9 @@ body {
 }
 
 .btn-outline-custom:hover {
-  background: #667eea;
+  background: #0a1f58;
   color: #fff;
+  border: 2px solid #0a1f58;
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
 }

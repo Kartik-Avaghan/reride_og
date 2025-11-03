@@ -111,12 +111,49 @@
     </div>
   </div>
 
+  
+  <!-- Test Ride Modal -->
+  <div id="testRideModal" class="modal">
+    <div class="modal-container">
+       <div class="modal-content">
+        <div class="modal-header">
+          <h2>Schedule Test Ride</h2>
+          <span class="close">&times;</span>
+        </div>
+        <form id="testRideForm" class="test-ride-form">
+          <div class="form-group">
+            <label for="trName">Name</label>
+            <input type="text" id="trName" name="name" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="trMobile">Mobile Number</label>
+            <input type="tel" id="trMobile" name="mobile" pattern="[0-9]{10}" required class="form-control" placeholder="10-digit mobile number">
+          </div>
+          <div class="form-group">
+            <label for="trEmail">Email</label>
+            <input type="email" id="trEmail" name="email" required class="form-control" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="trDate">Preferred Date</label>
+            <input type="date" id="trDate" name="date" required class="form-control" min="">
+          </div>
+          <div class="form-group">
+            <label for="trTime">Preferred Time</label>
+            <input type="time" id="trTime" name="time" required class="form-control">
+          </div>
+          <button type="submit" class="btn-custom btn-primary-custom">Schedule Test Ride</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   
   <!-- Swiper JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
-  
+
+
   <script>
     let swiper;
 
@@ -268,7 +305,74 @@
       });
 
       document.getElementById('testRideBtn').addEventListener('click', function() {
-        alert('Opening test ride request form...');
+        const modal = document.getElementById('testRideModal');
+        modal.style.display = 'block';
+        
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('trDate').min = today;
+      });
+
+      // Get the test ride modal
+      const modal = document.getElementById('testRideModal');
+      const closeBtn = document.getElementsByClassName('close')[0];
+
+      // Close the modal when clicking the close button
+      closeBtn.onclick = function() {
+        modal.style.display = 'none';
+      }
+
+      // Close the modal when clicking outside of it
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+
+      // Handle test ride form submission
+      document.getElementById('testRideForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // You can add your form submission logic here
+        const formData = {
+          testRideCustomerName: document.getElementById('trName').value,
+          testRideCustomerEmail: document.getElementById('trEmail').value,
+          testRideCustomerPhoneNo: document.getElementById('trMobile').value,
+          testRideDate: document.getElementById('trDate').value,
+          testRideTime: document.getElementById('trTime').value,
+          vehicle : {
+            vehicleId : vehicle.vehicleId
+          }
+        };
+
+        console.log('Test ride form data:', formData);
+
+        try {
+          fetch('http://localhost:8080/testRide/bookTestRide', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Success:', data);
+            alert('Test ride request submitted successfully!');
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        } catch (error) {
+          console.log("Error submitting test ride request")
+        }
+
+      
+        modal.style.display = 'none';
       });
     }
 
