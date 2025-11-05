@@ -109,10 +109,27 @@
                       Location
                     </h6>
                     <select class="form-select" id="select-location">
-                      <option>Select Location</option>
-                      <option>Jalhalli</option>
-                      <option>Rajajinagar</option>
+                      <option value="">Select Location</option>
                     </select>
+                    <script>
+                      // Fetch locations when page loads
+                      fetch("http://localhost:8080/branch/website/getBranches")
+                      .then(response => response.json())
+                      .then(data => {
+                        const select = document.getElementById('select-location');
+                        data.forEach(branch => {
+                        const option = document.createElement('option');
+                        option.value = branch.branchId;
+                        option.textContent = branch.branchArea;
+                        select.appendChild(option);
+                        });
+                      })
+                      .catch(error => {
+                        console.error('Error fetching locations:', error);
+                        const select = document.getElementById('select-location');
+                        select.innerHTML = '<option>Error loading locations</option>';
+                      });
+                    </script>
                   </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
@@ -133,9 +150,11 @@
                       <option>Vespa</option>
                       <option>OLA</option>
                       <option>Yamaha</option>
+                      <option>Royal Enfield</option>
                     </select>
                   </div>
                 </div>
+                
                 <div class="col-md-3 col-sm-6">
                   <div class="booking_2i">
                     <h6 class="mb-3">
@@ -148,7 +167,8 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-3">
+
+                <!-- <div class="col-md-3 col-sm-6 mb-3">
                   <div class="booking_2i">
                     <h6 class="mb-3">
                       <i class="fa fa-map-marker me-1 col_oran"></i>Model Name
@@ -157,7 +177,8 @@
                       <option value="">Select Model</option>
                     </select>
                   </div>
-                </div>
+                </div> -->
+
               </div>
               <div class="row booking_2 mt-4">
                 <div class="col-md-3 col-sm-6">
@@ -245,6 +266,7 @@
       </div>
     </div>
     <div class="container" id="cards-wrapper">
+      
       <a
         class="button d-block btn"
         style="
@@ -256,9 +278,10 @@
           margin-bottom: 1%;
         "
         href="./buy.html"
-        >Clear</a
-      >
+        >Clear</a>
+
       <div id="results" class="row g-3"></div>
+
     </div>
 
     <div

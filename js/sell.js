@@ -430,7 +430,9 @@ function loadInspectionDetails() {
 
   function checkInspectionDetails() {
     const date = inspectionDateInput.value.trim();
-    const location = inspectionLocationInput.value.trim();
+    const location = inspectionLocationInput.options[inspectionLocationInput.selectedIndex].innerText.trim();
+    const inspectionBranchId = inspectionLocationInput.value.trim();
+
 
     if (date !== "" && location !== "") {
       inspectionButton.style.display = "block";
@@ -445,9 +447,11 @@ function loadInspectionDetails() {
   });
 
   inspectionLocationInput.addEventListener("change", (e) => {
-    formData.inspectionLocation = e.target.value;
+    formData.branchId = e.target.value;
+    formData.inspectionLocation = e.target.options[e.target.selectedIndex]?.text || "";
     checkInspectionDetails();
   });
+
 }
 
 // Filter functions
@@ -523,6 +527,7 @@ function submitForm() {
     vehicleInspectionBranch: formData.inspectionLocation,
     vehicleInspectionDate: formData.inspectionDate,
     vehicleType: formData.vehicleType,
+    branchId : formData.branchId,
   };
 
   // --- User JSON ---
@@ -569,12 +574,15 @@ function submitForm() {
     method: "POST",
     body: formPayload,
   })
-  .then((res) => res.json())
+  .then((res) => {
+    if(!res.ok){
+      throw new Error("Error adding vehicle")
+    } 
+    alert( "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon.");  
+    res.json()})
   .then((data) => {
     console.log(data);
-    alert(
-      "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon."
-    );
+    
   })
   .catch((error) => console.log(error));
 }
