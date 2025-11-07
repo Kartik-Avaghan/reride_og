@@ -506,7 +506,7 @@
 
       if (!data || data.length === 0) {
         container.innerHTML =
-          '<div class="col-12 text-center text-muted">No vehicles available.</div>';
+          '<div class="col-12 text-center text-muted" style="height:165px">No vehicles available.</div>';
         return;
       }
 
@@ -548,7 +548,7 @@
       // Reads all filters and keeps only real, user-entered values
       function getFilterValues() {
         const raw = {
-          vehicleInspectionBranch: document.getElementById("select-location")?.value || "",
+          branchId: document.getElementById("select-location")?.value || "",
           vehicleBrand: document.getElementById("select-brand")?.value || "",
           vehicleModel: document.getElementById("select-model")?.value || "",
           vehicleType: document.getElementById("select-type")?.value || "",
