@@ -13,7 +13,6 @@
 
     <link rel="stylesheet" href="./css/nav.css" />
     <link rel="stylesheet" href="./css/index.css" />
-    <link rel="stylesheet" href="./css/featuredBikes.css" />
     <!-- SwiperJS CSS -->
     <link
       rel="stylesheet"
@@ -170,21 +169,39 @@
 
     <section class="featured-bikes">
       <div class="heading-row">
-        <h2>Latest</h2>
-        <h2 style="color:#0a1f58"><strong>Bikes</strong></h2>
+        <h2>Featured</h2>
+        <h2 style="color: #0a1f58"><strong>Bikes</strong></h2>
       </div>
 
-      <div class="swiper featuredSwiper">
-        <div class="swiper-wrapper" id="featured-bikes-container">
-          <!-- dynamic cards -->
+      <div class="bike-carousel">
+        <div class="carousel-track" id="carousel-track">
+          <div class="bike-card">
+            <img src="./images/home/bike-909690_1280.jpg" alt="Bike 1" />
+            <h3>Bike 1</h3>
+          </div>
+          <div class="bike-card">
+            <img src="./images/home/images.jfif" alt="Bike 2" />
+            <h3>Bike 2</h3>
+          </div>
+          <div class="bike-card">
+            <img
+              src="./images/home/62810_2022_Bajaj_Pulsar_N160_5_468x263.jpg"
+              alt="Bike 3"
+            />
+            <h3>Bike 3</h3>
+          </div>
+          <div class="bike-card">
+            <img src="./images/home/Fnihuh0agAA-8Tp.jpg" alt="Bike 4" />
+            <h3>Bike 4</h3>
+          </div>
+          <div class="bike-card">
+            <img
+              src="./images/home/photo-1449426468159-d96dbf08f19f.jfif"
+              alt="Bike 5"
+            />
+            <h3>Bike 5</h3>
+          </div>
         </div>
-
-        <!-- navigation -->
-        <!-- <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div> -->
-
-        <!-- pagination -->
-        <div class="swiper-pagination"></div>
       </div>
     </section>
 
@@ -300,7 +317,6 @@
 
     <script src="js/index.js"></script>
     <script src="./js/nav.js"></script>
-    <script src="./js/featuredbikes.js"></script>
     <!-- SwiperJS JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   </body>

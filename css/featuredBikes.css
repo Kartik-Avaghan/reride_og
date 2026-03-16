@@ -1,0 +1,150 @@
+
+
+.heading-row{
+  justify-content: center;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+/* cards */
+.bike-card{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.bike-image{
+  position:relative;
+}
+
+.bike-image img{
+  width:100%;
+  height:210px;
+  object-fit:cover;
+}
+
+.bike-badge{
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  background:#0a1f58;
+  color:white;
+  font-size:13px;
+  padding:6px 12px;
+  border-radius:6px;
+  font-weight:500;
+}
+
+.bike-info{
+  padding:18px;
+}
+
+.bike-title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.bike-title-row h3{
+  font-size:18px;
+  font-weight:600;
+  margin:0;
+}
+
+.bike-price{
+  font-size:20px;
+  font-weight:700;
+  color:#0a1f58;
+}
+
+.bike-type{
+  font-size:14px;
+  color:#777;
+  margin-top:4px;
+}
+
+.bike-specs{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  margin-top:8px;
+}
+
+.bike-owner{
+  font-size:14px;
+  margin-top:4px;
+  text-align:right;
+}
+
+.bike-reg{
+  margin-top:12px;
+  font-weight:500;
+  text-align:center;
+  color:#444;
+}
+
+.bike-btn{
+  margin-top:14px;
+  width:100%;
+  padding:10px;
+  background:#0a1f58;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.bike-btn:hover{
+  background:#081640;
+}
+
+/* cousrosel */
+.featured-bikes {
+  padding: 60px 5%;
+}
+
+.bike-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform .2s ease;
+}
+
+.bike-card:hover {
+  transform: translateY(-5px);
+}
+
+.bike-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.bike-card-body {
+  padding: 16px;
+}
+
+.bike-title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.bike-meta {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.bike-price {
+  color: #0a1f58;
+  font-weight: 700;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.swiper-pagination{
+  position: relative !important;
+}

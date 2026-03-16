@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,7 +31,6 @@
 
     <link rel="stylesheet" href="/css/bikedetails.css" />
     <link rel="stylesheet" href="/css/nav.css" />
-    
   </head>
 
   <body>
@@ -216,7 +215,7 @@
       async function fetchVehicleData(vehicleId) {
         try {
           const response = await fetch(
-            `http://localhost:8080/vehicle/website/getVehicle/${vehicleId}`
+            `/api/vehicle/website/getVehicle/${vehicleId}`,
           );
 
           if (!response.ok) {
@@ -273,18 +272,18 @@
             Available
           </div>
           <h1 class="vehicle-title">${vehicle.vehicleBrand || "N/A"} ${
-          vehicle.vehicleModel || ""
-        }</h1>
+            vehicle.vehicleModel || ""
+          }</h1>
           <p class="vehicle-subtitle">${vehicle.vehicleModelYear || "N/A"} • ${
-          vehicle.vehicleColour || "N/A"
-        }</p>
+            vehicle.vehicleColour || "N/A"
+          }</p>
         </div>
 
         <!-- Price Section -->
         <div class="price-section">
           <div class="price-label">Vehicle Price</div>
           <div class="price-value">${formatPrice(
-            vehicle.vehicleOutLetPrice
+            vehicle.vehicleOutLetPrice,
           )}</div>
         </div>
 
@@ -405,8 +404,7 @@
             const formData = {
               testRideCustomerName: document.getElementById("trName").value,
               testRideCustomerEmail: document.getElementById("trEmail").value,
-              testRideCustomerPhoneNo:
-                document.getElementById("trMobile").value,
+              testRideCustomerPhoneNo: document.getElementById("trMobile").value,
               testRideDate: document.getElementById("trDate").value,
               testRideTime: document.getElementById("trTime").value,
               vehicle: {
@@ -417,7 +415,7 @@
             console.log("Test ride form data:", formData);
 
             try {
-              fetch("http://localhost:8080/testRide/bookTestRide", {
+              fetch("/api/testRide/bookTestRide", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -456,9 +454,9 @@
             .map(
               (imageUrl) => `
           <div class="swiper-slide">
-            <img src="http://localhost:8080/uploads/${imageUrl}" alt="Vehicle Image" ">
+            <img src="/api/uploads/${imageUrl}" alt="Vehicle Image" ">
           </div>
-        `
+        `,
             )
             .join("");
         }
@@ -512,7 +510,7 @@
 
         if (!vehicleId) {
           displayError(
-            "No vehicle ID provided in URL. Please add ?id=YOUR_VEHICLE_ID to the URL."
+            "No vehicle ID provided in URL. Please add ?id=YOUR_VEHICLE_ID to the URL.",
           );
           return;
         }
@@ -523,7 +521,7 @@
           renderVehicleDetails(vehicleData);
         } catch (error) {
           displayError(
-            "Unable to load vehicle details. Please check if the vehicle ID is correct and the server is running."
+            "Unable to load vehicle details. Please check if the vehicle ID is correct and the server is running.",
           );
         }
       }
@@ -531,7 +529,5 @@
       // Load data when page loads
       document.addEventListener("DOMContentLoaded", initializePage);
     </script>
-
   </body>
-
 </html>

@@ -1,14 +1,14 @@
 let vehicles = [];
 
 // Load the JSON file
-fetch('./json/vehicles.json')
-    .then(res => res.json())
-    .then(data => {
-        vehicles = data.vehicles || [];
-    })
-    .catch(err => {
-        console.error('Failed to load vehicles.json', err);
-    });
+// fetch('./json/vehicles.json')
+//     .then(res => res.json())
+//     .then(data => {
+//         vehicles = data.vehicles || [];
+//     })
+//     .catch(err => {
+//         console.error('Failed to load vehicles.json', err);
+//     });
 
 const brandEl = document.getElementById('select-brand');
 const modelEl = document.getElementById('select-model');

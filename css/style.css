@@ -1,0 +1,16 @@
+ /* Custom Styles for nuances not covered by Tailwind utilities */
+body {
+    background-color: #f9efec;
+    color: #0a1f58;
+    font-family: 'Inter', sans-serif;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #0a1f58 !important;
+}
+
+.glass-nav {
+    background: rgba(249, 239, 236, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(10, 31, 88, 0.05);
+}

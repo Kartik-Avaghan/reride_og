@@ -461,7 +461,7 @@
                 </Select>
                 <script>
                   // Fetch locations when page loads
-                  fetch("http://localhost:8080/branch/website/getBranches")
+                  fetch("/api/branch/website/getBranches")
                   .then(response => response.json())
                   .then(data => {
                     const select = document.getElementById('inspectionLocation');

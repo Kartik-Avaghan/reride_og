@@ -27,7 +27,7 @@ const vehicleData = {
     "Pulsar 200",
     "Pulsar 220F",
     "Pulsar NS200",
-    "Pulsar NS400Z",  
+    "Pulsar NS400Z",
   ],
   Hero: [
     "Glamour",
@@ -91,11 +91,11 @@ const vehicleData = {
     "200 Duke",
     "250 Duke",
     "390 Duke",
-    "160 Duke",  
+    "160 Duke",
     "RC 125",
     "RC 200",
     "RC 390",
-    "RC 160",   
+    "RC 160",
   ],
   Kawasaki: [
     "Ninja 300",
@@ -104,7 +104,7 @@ const vehicleData = {
     "Z650",
     "Z900",
     "Versys 650",
-    "Versys-X 300",  
+    "Versys-X 300",
   ],
   OLA: ["S1", "S1 Pro", "S1 Air"],
   Vespa: ["Elegante 150", "SXL 150", "VXL 150", "ZX 125"],
@@ -119,12 +119,8 @@ const vehicleData = {
     "Chief PowerPlus",
     "Chieftain PowerPlus",
   ],
-  Ultraviolette: [
-    "X47",
-    "X47 Crossover",
-  ],
+  Ultraviolette: ["X47", "X47 Crossover"],
 };
-
 
 // Main function to select option and move to next step
 function selectOption(type, value, stepNumber) {
@@ -133,7 +129,7 @@ function selectOption(type, value, stepNumber) {
   // Highlight selected option
   const currentStepElement = document.getElementById(`step${stepNumber}`);
   const options = currentStepElement.querySelectorAll(
-    ".option-card, .model-item, .rto-item"
+    ".option-card, .model-item, .rto-item",
   );
   options.forEach((opt) => opt.classList.remove("selected"));
 
@@ -344,7 +340,7 @@ function loadRegistrationUpload() {
     formData.vehicleImages = [];
   }
 
-    function renderImagePreview() {
+  function renderImagePreview() {
     imagePreviewDiv.innerHTML = "";
     if (formData.vehicleImages.length > 0) {
       const countText = document.createElement("p");
@@ -378,7 +374,6 @@ function loadRegistrationUpload() {
     } else {
       registrationButton.style.display = "none";
     }
-
   }
 
   // Update formData and check for completeness
@@ -430,9 +425,11 @@ function loadInspectionDetails() {
 
   function checkInspectionDetails() {
     const date = inspectionDateInput.value.trim();
-    const location = inspectionLocationInput.options[inspectionLocationInput.selectedIndex].innerText.trim();
+    const location =
+      inspectionLocationInput.options[
+        inspectionLocationInput.selectedIndex
+      ].innerText.trim();
     const inspectionBranchId = inspectionLocationInput.value.trim();
-
 
     if (date !== "" && location !== "") {
       inspectionButton.style.display = "block";
@@ -448,10 +445,10 @@ function loadInspectionDetails() {
 
   inspectionLocationInput.addEventListener("change", (e) => {
     formData.branchId = e.target.value;
-    formData.inspectionLocation = e.target.options[e.target.selectedIndex]?.text || "";
+    formData.inspectionLocation =
+      e.target.options[e.target.selectedIndex]?.text || "";
     checkInspectionDetails();
   });
-
 }
 
 // Filter functions
@@ -501,9 +498,6 @@ function loadContactDetails() {
 // Call this function after DOM loads
 loadContactDetails();
 
-
-
-
 // submit form
 function submitForm() {
   // Validate required fields
@@ -527,7 +521,7 @@ function submitForm() {
     vehicleInspectionBranch: formData.inspectionLocation,
     vehicleInspectionDate: formData.inspectionDate,
     vehicleType: formData.vehicleType,
-    branchId : formData.branchId,
+    branchId: formData.branchId,
   };
 
   // --- User JSON ---
@@ -541,12 +535,12 @@ function submitForm() {
   // Append vehicle and user as separate blobs
   formPayload.append(
     "vehicle",
-    new Blob([JSON.stringify(vehicleData)], { type: "application/json" })
+    new Blob([JSON.stringify(vehicleData)], { type: "application/json" }),
   );
 
   formPayload.append(
     "user",
-    new Blob([JSON.stringify(userData)], { type: "application/json" })
+    new Blob([JSON.stringify(userData)], { type: "application/json" }),
   );
 
   // Append files
@@ -555,8 +549,9 @@ function submitForm() {
   }
 
   formPayload.append(
-    "inspection" , new Blob([JSON.stringify({})], {type: "application/json"})
-  )
+    "inspection",
+    new Blob([JSON.stringify({})], { type: "application/json" }),
+  );
 
   // Optional: log content for debugging
   for (let [key, value] of formPayload.entries()) {
@@ -570,23 +565,24 @@ function submitForm() {
   }
 
   // Send request
-  fetch("http://localhost:8080/vehicle/addVehicle", {
+  fetch("/api/vehicle/addVehicle", {
     method: "POST",
     body: formPayload,
   })
-  .then((res) => {
-    if(!res.ok){
-      throw new Error("Error adding vehicle")
-    } 
-    alert( "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon.");  
-    res.json()})
-  .then((data) => {
-    console.log(data);
-    
-  })
-  .catch((error) => console.log(error));
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Error adding vehicle");
+      }
+      alert(
+        "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon.",
+      );
+      res.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => console.log(error));
 }
-
 
 // Initialize the form
 document.addEventListener("DOMContentLoaded", function () {

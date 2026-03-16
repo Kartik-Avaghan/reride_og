@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buy</title>
+    
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -113,7 +114,7 @@
                     </select>
                     <script>
                       // Fetch locations when page loads
-                      fetch("http://localhost:8080/branch/website/getBranches")
+                      fetch("/api/branch/website/getBranches")
                       .then(response => response.json())
                       .then(data => {
                         const select = document.getElementById('select-location');
@@ -409,7 +410,7 @@
 
   <script>
     /* ---------- CONFIG ---------- */
-    const API_BASE = "http://localhost:8080/vehicle/website";
+    const API_BASE = "/api/vehicle/website";
 
     /* ---------- STATE ---------- */
     let vehiclesData = [];
@@ -432,7 +433,7 @@
       const imgArray = JSON.parse(vehicleImage);
       const imgSrc =
         imgArray && imgArray.length
-          ? `http://localhost:8080/uploads/${imgArray[0]}`
+          ? `/api/uploads/${imgArray[0]}`
           : "./images/no-image.png";
 
       const priceText =
@@ -561,7 +562,7 @@
         for (const [key, val] of Object.entries(raw)) {
           const trimmed = String(val).trim().toLowerCase();
 
-          // 🚫 ignore placeholders and defaults
+          // ignore placeholders and defaults
           const isPlaceholder =
             trimmed === "" ||
             trimmed.startsWith("select") ||
