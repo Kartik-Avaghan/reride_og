@@ -225,6 +225,65 @@ function loadModels() {
     modelItem.onclick = () => selectOption("model", model, 3);
     modelList.appendChild(modelItem);
   });
+
+  const otherItem = document.createElement("div");
+  otherItem.className = "model-item";
+  otherItem.textContent = "Other";
+  otherItem.style.fontWeight = "600";
+  otherItem.style.color = "#ff6b00";
+
+  otherItem.onclick = () => {
+    showOtherModelInput();
+  };
+
+  modelList.appendChild(otherItem);
+}
+function showOtherModelInput() {
+  const modelList = document.getElementById("modelList");
+
+  // ✅ Check if input already exists
+  if (document.getElementById("otherModelContainer")) {
+    // Optional: scroll to it instead of creating again
+    document.getElementById("otherModelContainer").scrollIntoView({
+      behavior: "smooth",
+    });
+    return;
+  }
+
+  // Clear selection highlight
+  const options = modelList.querySelectorAll(".model-item");
+  options.forEach((opt) => opt.classList.remove("selected"));
+
+  // Create container
+  const inputContainer = document.createElement("div");
+  inputContainer.id = "otherModelContainer"; // ✅ unique ID
+  inputContainer.style.marginTop = "10px";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Enter your vehicle model";
+  input.className = "search-input";
+  input.style.width = "100%";
+
+  const btn = document.createElement("button");
+  btn.textContent = "Continue";
+  btn.className = "continue-btn";
+  btn.style.marginTop = "10px";
+
+  btn.onclick = () => {
+    if (input.value.trim() === "") {
+      alert("Please enter vehicle model");
+      return;
+    }
+
+    formData.model = input.value.trim();
+    nextStep(3);
+  };
+
+  inputContainer.appendChild(input);
+  inputContainer.appendChild(btn);
+
+  modelList.appendChild(inputContainer);
 }
 
 function loadVariants() {
@@ -423,20 +482,16 @@ function loadInspectionDetails() {
 
   inspectionButton.style.display = "none";
 
-  function checkInspectionDetails() {
-    const date = inspectionDateInput.value.trim();
-    const location =
-      inspectionLocationInput.options[
-        inspectionLocationInput.selectedIndex
-      ].innerText.trim();
-    const inspectionBranchId = inspectionLocationInput.value.trim();
+function checkInspectionDetails() {
+  const date = inspectionDateInput.value.trim();
+  const branchId = inspectionLocationInput.value.trim(); // ✅ use value
 
-    if (date !== "" && location !== "") {
-      inspectionButton.style.display = "block";
-    } else {
-      inspectionButton.style.display = "none";
-    }
+  if (date !== "" && branchId !== "") {
+    inspectionButton.style.display = "block";
+  } else {
+    inspectionButton.style.display = "none";
   }
+}
 
   inspectionDateInput.addEventListener("change", (e) => {
     formData.inspectionDate = e.target.value;
@@ -573,10 +628,26 @@ function submitForm() {
       if (!res.ok) {
         throw new Error("Error adding vehicle");
       }
+
       alert(
-        "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon.",
+        "Thank you! Your vehicle details have been submitted successfully. Our team will contact you soon ",
       );
-      res.json();
+
+      // Clear form data
+      Object.keys(formData).forEach((key) => delete formData[key]);
+
+      // Reset file input manually
+      const fileInput = document.getElementById("photoInput");
+      if (fileInput) fileInput.value = "";
+
+      //  Optional: clear preview
+      const preview = document.getElementById("photoPreview");
+      if (preview) preview.innerHTML = "";
+
+      //  Redirect to home page
+      window.location.href = "./index.html";
+
+      return res.json();
     })
     .then((data) => {
       console.log(data);

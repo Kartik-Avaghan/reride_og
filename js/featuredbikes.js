@@ -1,7 +1,7 @@
 async function loadFeaturedBikes() {
   try {
     const res = await fetch("/api/vehicle/website/latest");
-    const bikes = await res.json();
+    const bikes = await res.json(); 
 
     const container = document.getElementById("featured-bikes-container");
 
@@ -25,32 +25,32 @@ async function loadFeaturedBikes() {
         </div>
 
         <div class="bike-info">
+        
+          <div class="bike-title-row">
+          <h3>${bike.vehicleBrand} ${bike.vehicleModel}</h3>
+          <span class="bike-price">₹${bike.vehicleOutLetPrice}</span>
+          </div>
 
-            <div class="bike-title-row">
-            <h3>${bike.vehicleBrand} ${bike.vehicleModel}</h3>
-            <span class="bike-price">₹${bike.vehicleOutLetPrice}</span>
-            </div>
+          <div class="bike-type">${bike.vehicleType}</div>
 
-            <div class="bike-type">${bike.vehicleType}</div>
+          <hr>
 
-            <hr>
+          <div class="bike-specs">
+          <div>${bike.vehicleModelYear}</div>
+          <div>Milage: ${bike.vehicleMileage}</div>
+          </div>
 
-            <div class="bike-specs">
-            <div>${bike.vehicleModelYear}</div>
-            <div>Milage: ${bike.vehicleMileage}</div>
-            </div>
+          <div class="bike-owner">
+          Owner: ${bike.vehicleOwnerType}
+          </div>
 
-            <div class="bike-owner">
-            Owner: ${bike.vehicleOwnerType}
-            </div>
+          <div class="bike-reg">
+          Reg No: ${bike.vehicleRegisterNumber}
+          </div>
 
-            <div class="bike-reg">
-            Reg No: ${bike.vehicleRegisterNumber}
-            </div>
-
-            <button class="bike-btn" onclick="window.location.href='/bikeDetails.html?id=${bike.vehicleId}'">
-            Book Ride 
-            </button>
+          <button class="bike-btn" onclick="window.location.href='/bikeDetails.html?id=${bike.vehicleId}'">
+          Book Ride 
+          </button>
 
         </div>
 
@@ -73,12 +73,7 @@ function initSwiper() {
     slidesPerView: 1,
     spaceBetween: 20,
     loop: true,
-
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-
+    
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
@@ -94,7 +89,7 @@ function initSwiper() {
       },
 
       1280: {
-        slidesPerView: 3,
+        slidesPerView: 4,
       },
     },
   });

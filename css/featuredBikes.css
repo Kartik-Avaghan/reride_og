@@ -1,9 +1,13 @@
 
-
 .heading-row{
   justify-content: center;
   display: flex;
   margin-bottom: 20px;
+}
+
+.featured-bikes{
+  display: block;
+  margin: auto;
 }
 
 /* cards */
@@ -12,6 +16,7 @@
   border-radius:14px;
   overflow:hidden;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  max-width: 350px;
 }
 
 .bike-image{
