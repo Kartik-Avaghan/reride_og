@@ -188,6 +188,33 @@
                 class="form-control"
               />
             </div>
+            <div class="form-group">
+                  <div class="booking_2i">
+                    <h6 class="mb-3"> Preferred Branch  </h6>
+                    <select class="form-select" id="select-location">
+                      <option value="">Select Location</option>
+                    </select>
+                    <script>
+                      // Fetch locations when page loads
+                      fetch("/api/branch/website/getBranches")
+                      .then(response => response.json())
+                      .then(data => {
+                        const select = document.getElementById('select-location');
+                        data.forEach(branch => {
+                        const option = document.createElement('option');
+                        option.value = branch.branchId;
+                        option.textContent = branch.branchArea;
+                        select.appendChild(option);
+                        });
+                      })
+                      .catch(error => {
+                        console.error('Error fetching locations:', error);
+                        const select = document.getElementById('select-location');
+                        select.innerHTML = '<option>Error loading locations</option>';
+                      });
+                    </script>
+                  </div>
+                </div>
             <button type="submit" class="btn-custom btn-primary-custom">
               Schedule Test Ride
             </button>
@@ -223,7 +250,7 @@
           }
 
           const data = await response.json();
-          console.log("Fetched vehicle data:", data);
+          // console.log("Fetched vehicle data:", data);
           return data;
         } catch (error) {
           console.error("Error fetching vehicle data:", error);
@@ -407,12 +434,13 @@
               testRideCustomerPhoneNo: document.getElementById("trMobile").value,
               testRideDate: document.getElementById("trDate").value,
               testRideTime: document.getElementById("trTime").value,
+              branchId: document.getElementById("select-location").value,
               vehicle: {
                 vehicleId: vehicle.vehicleId,
               },
             };
 
-            console.log("Test ride form data:", formData);
+            // console.log("Test ride form data:", formData);
 
             try {
               fetch("/api/testRide/bookTestRide", {
@@ -429,7 +457,7 @@
                   return response.json();
                 })
                 .then((data) => {
-                  console.log("Success:", data);
+                  // console.log("Success:", data);
                   alert("Test ride request submitted successfully!");
                 })
                 .catch((error) => {
@@ -447,7 +475,7 @@
       function loadVehicleImages(vehicle) {
         const imagesContainer = document.getElementById("bikeImages");
         let images = JSON.parse(vehicle.vehicleImage);
-        console.log("Vehicle images:", images);
+        // console.log("Vehicle images:", images);
         // Check if vehicle has images
         if (images && images.length > 0) {
           imagesContainer.innerHTML = images
